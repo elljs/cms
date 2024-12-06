@@ -1,32 +1,33 @@
 server:
+    # 服务器运行端口
     port: 9999
     undertow:
       threads:
+        # I/O线程数
         io: 4
+        # 工作线程数
         worker: 20
+      # 设置缓冲区大小
       buffer-size: 1024
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-  api-docs:
-    path: /v3/api-docs
-
-spring:    
+spring:
   application:
-      name: dt
+      name: cms  
   datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://mysql.docker.orb.local:3306/ell
       username: root
       password: 123456
   data:
     redis:
+      # Redis服务器地址
       host: 127.0.0.1
+      # Redis服务器连接端口
       port: 6379
+      # Redis服务器密码
       password: 123456
-      timeout: 10s
+      # 连接超时时间
+      timeout: 10s      
       lettuce:
           pool:
             # 连接池最大连接数
@@ -37,10 +38,33 @@ spring:
             max-idle: 10
             # 连接池中的最小空闲连接
             min-idle: 0
-      redisson:
-          config: |
-              singleServerConfig:
-                  timeout: 3000
+
+  quartz:
+    # 指定作业存储的类型为 JDBC，使用数据库来存储作业和触发器的信息
+    job-store-type: jdbc
+    jdbc:
+      # 初始化模式设置为 never，表示 Quartz 在启动时不会自动创建或更新数据库表结构
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          # 作业存储配置
+          jobStore:
+            # 指定数据源的名称为 quartzDS
+            dataSource: quartzDS
+            # 指定作业存储的类为 JobStoreTX，这是 JDBC 作业存储的默认实现
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            # 指定 JDBC 代理类为 StdJDBCDelegate，这是与数据库交互的标准代理类
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_
+          # 数据源配置
+          dataSource:
+            quartzDS:
+              provider: hikaricp
+              driver: com.mysql.cj.jdbc.Driver
+              URL: jdbc:mysql://mysql.docker.orb.local:3306/quartz
+              user: root
+              password: 123456
 
 mybatis-flex:
   global-config:
@@ -48,15 +72,26 @@ mybatis-flex:
 
 rocketmq:
   name-server: 127.0.0.1:9876
+  # 生产者
   producer:
-    group: task-producer-group
+    group: task_group
+    # 消息发送超时时间
+    send-message-timeout: 3000
+    # 消息最大长度4M
+    max-message-size: 4096
+    # 消息发送失败重试次数
+    retry-times-when-send-failed: 3
+    # 异步消息发送失败重试次数
+    retry-times-when-send-async-failed: 2
+  # 消费者
   consumer:
-    group: task-consumer-group
-    topic: task       
+    group: task_group
+    # 每次提取的最大消息数
+    pull-batch-size: 5     
 
 sa-token:
   # token 名称（同时也是 cookie 名称）
-  token-name: satoken
+  token-name: Authorization
   # token 前缀
   token-prefix: Bearer
   # token 有效期（单位：秒） 默认30天，-1 代表永久有效
@@ -69,9 +104,9 @@ sa-token:
   is-share: true
   # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
   token-style: uuid
-  # 是否输出操作日志 
+  # 是否输出操作日志
   is-log: true
-  # jwt秘钥    
+  # jwt秘钥
   jwt-secret-key: ellroyeqwkeihznxmnwlejkriwjhein
 
    

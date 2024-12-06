@@ -1,9 +1,0 @@
-{
-	"properties": [
-		{
-			"name": "spring.data.redis.redisson.config",
-			"type": "org.redisson.config.Config",
-			"description": "Redisson Config"
-		}
-	]
-}

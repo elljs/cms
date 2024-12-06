@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <!-- 继承默认配置 -->
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
-
+    <!-- 控制台日志输出 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
             <charset>utf8</charset>
         </encoder>
     </appender>
-
+    <!-- 文件日志输出 -->
     <appender name="APP_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -23,7 +24,7 @@
             <MaxFileSize>1MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-
+    <!-- INFO及以上等级的日志将被同时输出到控制台和文件 -->
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="APP_LOG" />

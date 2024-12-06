@@ -15,7 +15,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 
 @Configuration
 @EnableCaching
-class CacheConfig {
+public class CacheConfig {
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory,
             RedisSerializer<Object> redisSerializer) {

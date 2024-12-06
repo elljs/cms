@@ -7,13 +7,18 @@ services:
     ports:
       - "3306:3306"
     environment:
+      # 设置root用户的密码
       - MYSQL_ROOT_PASSWORD=123456
+      # 设置时区
       - TZ=Asia/Shanghai
     networks:
       - ell
     volumes:
       - mysql-storage:/var/lib/mysql
+      # 初始化数据库的脚本
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      # 初始化Quartz数据库的脚本
+      - ./init-quartz.sql:/docker-entrypoint-initdb.d/init-quartz.sql
   
   # Redis 5.0 service
   redis:
