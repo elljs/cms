@@ -1608,77 +1608,6 @@ public class RedissonConfig {
 ```
 
 使用分布式锁
-### Redisson 介绍
-
-Redisson是架设在Redis基础上的一个Java驻内存数据网格（In-Memory Data Grid）。它实现了Redis的分布式和响应式特性，为Java开发者提供了更为方便和高级的与Redis交互的方式。Redisson不仅支持Redis的所有基础数据结构，如String、Hash、List、Set、Sorted Set等，还提供了许多分布式的高级功能，如分布式锁、分布式集合、分布式服务、分布式对象等。这些功能使得Redisson在分布式系统中具有广泛的应用场景，如分布式缓存、分布式会话管理、分布式锁等。
-
-### 在Springboot3中集成Redisson
-
-在Spring Boot 3中集成Redisson的步骤如下：
-
-1. **添加依赖**：
-
-   在Spring Boot项目的`pom.xml`文件中添加Redisson的依赖。例如：
-
-   ```xml
-   <dependency>
-       <groupId>org.redisson</groupId>
-       <artifactId>redisson-spring-boot-starter</artifactId>
-       <version>最新版本</version>
-   </dependency>
-   ```
-
-   注意替换为Redisson的最新版本。
-
-2. **配置Redisson客户端**：
-
-   在`application.properties`或`application.yml`文件中配置Redisson客户端的连接信息。例如，使用`application.yml`配置：
-
-   ```yaml
-   spring:
-     redis:
-       redisson:
-         config: |
-           singleServerConfig:
-             address: redis://localhost:6379 # Redis连接地址
-             password: null # 如果Redis需要密码认证，则填写密码
-             timeout: 3000 # 命令执行超时时间（毫秒）
-   ```
-
-   如果使用的是Redis集群，则需要配置集群相关的信息，如节点地址等。
-
-3. **初始化Redisson客户端**：
-
-   在Spring Boot的配置类中初始化Redisson客户端。可以通过`@Bean`注解将RedissonClient注入到Spring容器中。例如：
-
-   ```java
-   import org.redisson.Redisson;
-   import org.redisson.api.RedissonClient;
-   import org.redisson.config.Config;
-   import org.springframework.context.annotation.Bean;
-   import org.springframework.context.annotation.Configuration;
-
-   @Configuration
-   public class RedissonConfig {
-
-       @Bean
-       public RedissonClient redissonClient() {
-           Config config = new Config();
-           // 根据实际情况配置Redisson客户端，例如使用单节点配置或集群配置
-           config.useSingleServer().setAddress("redis://localhost:6379");
-           // 如果需要密码认证，则设置密码
-           // config.useSingleServer().setPassword("yourpassword");
-           return Redisson.create(config);
-       }
-   }
-   ```
-
-   注意：在实际应用中，应该根据具体的Redis配置（如密码、超时时间等）来配置Redisson客户端。
-
-4. **使用Redisson**：
-
-   现在，你可以在Spring Boot应用中的任何地方注入`RedissonClient`并使用Redisson提供的功能。例如，使用Redisson实现分布式锁：
-
 ```java
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -1717,8 +1646,6 @@ public class LockService {
    }
 }
 ```
-
-通过以上步骤，你就可以在Spring Boot 3中成功集成Redisson，并利用其提供的分布式功能来构建你的应用。
 
 ### 集成MySQL
 
@@ -2387,6 +2314,10 @@ volumes:
   # 初始化Quartz数据库的脚本
   - ./init-quartz.sql:/docker-entrypoint-initdb.d/init-quartz.sql
 ```
+
+## 源码地址
+
+[https://github.com/elljs/cms](https://github.com/elljs/cms)
 
 ## 总结
 
