@@ -1,0 +1,12 @@
+{
+  "name": "ell-cms",
+  "script": "java",
+  "args": [
+    "-jar",
+    "./target/cms-0.0.1-SNAPSHOT.jar"
+  ],
+  "error_file": "./logs/err.log",
+  "out_file": "./logs/out.log",
+  "exec_interpreter": "",
+  "exec_mode": "fork"
+}
